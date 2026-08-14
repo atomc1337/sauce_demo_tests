@@ -7,7 +7,13 @@ from selenium.webdriver.support.wait import WebDriverWait
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
+from Pages.base_page import BasePage
+from conftest import driver
 
+object_of_basepage = BasePage(driver)
+print(object_of_basepage.CHECKOUT_COMPLETE_URL.split('com', 1)[1])
+
+""""
 @pytest.fixture()
 def browser():
     chrome_browser = webdriver.Chrome()
@@ -37,3 +43,4 @@ def login_test(browser):
     assert page_wrapper.is_displayed(), 'element not found'
 
 # driver.quit()
+"""
