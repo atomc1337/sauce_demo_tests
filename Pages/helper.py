@@ -1,12 +1,7 @@
 import time
-from typing import Tuple
-
-from selenium.webdriver.common.by import By
-from Pages.LoginPage.login import Login
+from Pages.LoginPage.Login import Login
 from selenium.webdriver.support import expected_conditions as EC
-from Pages.InventoryPage.InventoryPage import InventoryPage
 from Pages.base_page import BasePage
-from selenium.webdriver.support.wait import WebDriverWait
 
 class Helper(BasePage):
     def __init__(self, driver):

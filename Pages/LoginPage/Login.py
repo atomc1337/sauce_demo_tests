@@ -1,18 +1,16 @@
-from typing import Tuple
-
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from Pages.InventoryPage.InventoryPage import InventoryPage
 from Pages.base_page import BasePage
-class Login(BasePage):
+#import dotenv
 
+class Login(BasePage):
+    #dotenv.load_dotenv()
     USERNAME_INPUT = (By.ID, "user-name")
     USERPASS_INPUT = (By.NAME, "password")
     LOGIN_BUTTON = (By.CSS_SELECTOR, '[data-test="login-button"]')
     USERNAME_ERROR_ICON = (By.CSS_SELECTOR, '#user-name + [data-icon=circle-xmark]')
     USERPASS_ERROR_ICON = (By.CSS_SELECTOR, '#password + [data-icon=circle-xmark]')
-    ERROR_BLOCK = (By.CLASS_NAME, "error-message-container")
 
 
     def __init__(self, driver):
@@ -62,3 +60,5 @@ class Login(BasePage):
     def login_with_visual_user(driver):
         login_as_user = Login(driver)
         return login_as_user.login("visual_user", "secret_sauce")
+
+
