@@ -19,3 +19,4 @@ class Cart(BasePage):
     def click_checkout_on_cart_page(self):
         self.wait.until(EC.visibility_of_element_located(self.CHECKOUT_BUTTON)).click()
         return self
+

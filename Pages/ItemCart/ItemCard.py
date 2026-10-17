@@ -8,7 +8,6 @@ from selenium.webdriver.support.ui import Select
 
 
 class ItemCard(BasePage):
-    ONSIE_ITEM_URL = "https://www.saucedemo.com/inventory-item.html?id=2"
     BACK_TO_PRODUCTS = (By.ID, "back-to-products")
     ADD_TO_CARD = (By.ID, "add-to-cart")
     REMOVE = (By.ID, "remove")

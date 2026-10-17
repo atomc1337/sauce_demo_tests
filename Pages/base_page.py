@@ -9,7 +9,8 @@ class BasePage:
     CART_URL = "https://www.saucedemo.com/cart.html"
     CHECKOUT_STEP_ONE_URL = "https://www.saucedemo.com/checkout-step-one.html"
     CHECKOUT_STEP_TWO_URL = "https://www.saucedemo.com/checkout-step-two.html"
-    CHECKOUT_COMPLETE_URL = "https://www.saucedemo.com/checkout-comlete.html"
+    CHECKOUT_COMPLETE_URL = "https://www.saucedemo.com/checkout-complete.html"
+    ONSIE_ITEM_URL = "https://www.saucedemo.com/inventory-item.html?id=2"
     ABOUT_URL = "https://saucelabs.com/about.html"
     SHOPPING_CART_BADGE = (By.CLASS_NAME, "shopping_cart_badge")
     SHOPPING_CART_LINK = (By.CLASS_NAME, "shopping_cart_link")

@@ -30,6 +30,7 @@ class InventoryPage(BasePage):
     SORT_OPTION_HILO = "hilo"
     INVENTORY_ITEM_PRICE = (By.CLASS_NAME, "inventory_item_price")
     INVENTORY_ITEM_NAME = (By.CLASS_NAME, "inventory_item_name")
+    INVENTORY_ITEM = (By.CLASS_NAME, "inventory_item")
 
     def __init__(self, driver):
         super().__init__(driver)
@@ -124,6 +125,15 @@ class InventoryPage(BasePage):
         self.wait.until(EC.visibility_of_element_located(self.SHOPPING_CART_LINK)).click()
         return self
 
-
-
-    
+    def add_items_to_cart_and_return_name_and_price(self, count=1):
+        items_list = self.driver.find_elements(*(self.INVENTORY_ITEM))
+        i = 0
+        name_price = []
+        for el in items_list:
+            if i == count:
+                break
+            el.find_element(By.CLASS_NAME, "btn_inventory").click()
+            i += 1
+            name_price_tuple = (el.find_element(*self.INVENTORY_ITEM_NAME).text, el.find_element(*self.INVENTORY_ITEM_PRICE).text)
+            name_price.append(name_price_tuple)
+        return name_price

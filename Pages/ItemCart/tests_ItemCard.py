@@ -45,3 +45,6 @@ def test_go_to_cart_from_item(driver):
     driver.find_element(*inventory_object.SHOPPING_CART_LINK).click()
     assert driver.current_url == inventory_object.CART_URL
 
+
+
+

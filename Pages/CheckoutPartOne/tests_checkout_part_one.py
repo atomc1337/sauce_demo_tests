@@ -10,6 +10,7 @@ from Pages.InventoryPage.InventoryPage import InventoryPage
 from selenium.webdriver.support.wait import WebDriverWait
 from Pages.Cart.Cart import Cart
 from Pages.CheckoutPartOne.CheckoutPartOne import CheckoutPartOne
+import pdb
 
 
 def test_click_cancel(driver):
@@ -85,4 +86,6 @@ def test_close_error_message_by_click_on_xmark(driver):
     checkout_part_one_object.wait.until(EC.visibility_of_element_located(checkout_part_one_object.ERROR_BUTTON)).click()
     assert "" not in error_box
     first_name_classes = driver.find_element(*checkout_part_one_object.FIRST_NAME_FIELD).get_attribute("class").split()
+    pdb.set_trace()
     assert "error" not in first_name_classes
+

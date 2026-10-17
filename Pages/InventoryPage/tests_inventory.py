@@ -166,3 +166,12 @@ def test_go_to_sauce_labs_backpack_cart_from_inventory_on_name(driver):
     login_object.login_with_standard_user(driver)
     inventory_object.go_to_sauce_labs_backpack()
     assert driver.current_url == "https://www.saucedemo.com/inventory-item.html?id=4"
+
+def test_test_test(driver):
+    inventory_object = InventoryPage(driver)
+    login_object = Login(driver)
+    login_object.login_with_standard_user(driver)
+    name_price = inventory_object.add_items_to_cart_and_return_name_and_price(3)
+    time.sleep(2)
+    print(name_price)
+    assert inventory_object.wait.until(EC.text_to_be_present_in_element(inventory_object.SHOPPING_CART_BADGE, "3"))

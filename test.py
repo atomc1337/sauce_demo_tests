@@ -1,5 +1,6 @@
 from Pages.base_page import BasePage
 from conftest import driver
+import pdb
 
 object_of_basepage = BasePage(driver)
 print(object_of_basepage.CHECKOUT_COMPLETE_URL.split('com', 1)[1])
@@ -55,12 +56,14 @@ def is_happy_number(number):
                 break
             fst_half.append(el)
             sqr1 = int(el) * sqr1
+        pdb.set_trace()
         for el in reversed(l_num):
             i += 1
-            if i >= half:
+            if i > half:
                 break
             snd_half.append(el)
             sqr2 = int(el) * sqr2
+        pdb.set_trace()
         if sqr1 == sqr2:
             return True
         else:

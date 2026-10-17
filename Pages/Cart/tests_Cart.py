@@ -55,3 +55,11 @@ def test_click_checkout_on_cart_page(driver):
     inventory_object.click_cart_icon_and_go_to_cart()
     cart_object.click_checkout_on_cart_page()
     assert driver.current_url == cart_object.CHECKOUT_STEP_ONE_URL
+
+def test_check_added_item_price(driver):
+    login_object = Login(driver)
+    inventory_object = InventoryPage(driver)
+    cart_object = Cart(driver)
+    login_object.login_with_standard_user(driver)
+    inventory_object.add_onesie_to_cart(driver)
+    inventory_object.click_cart_icon_and_go_to_cart()
