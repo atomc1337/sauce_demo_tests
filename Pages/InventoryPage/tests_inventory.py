@@ -6,30 +6,29 @@ from Pages.LoginPage.Login import Login
 from Pages.base_page import BasePage
 from Pages.InventoryPage.InventoryPage import InventoryPage
 from selenium.webdriver.support.wait import WebDriverWait
+import pdb
+from Pages.ItemCart.ItemCard import ItemCard
 def test_add_items_to_cart_with_standard_user(driver):
-    base_page_object = BasePage(driver)
-    scroll = ActionChains(driver)
     inventory_object = InventoryPage(driver)
     Login.login_with_standard_user(driver)
-    inventory_object.add_backpack_to_cart(driver)
-    assert base_page_object.wait.until(EC.visibility_of_element_located(InventoryPage.DELETE_BACKPACK_ITEM_BUTTON))
-    assert base_page_object.wait.until(EC.text_to_be_present_in_element((inventory_object.SHOPPING_CART_BADGE), "1"))
-    inventory_object.add_onesie_to_cart(driver)
-    assert base_page_object.wait.until(EC.text_to_be_present_in_element((inventory_object.SHOPPING_CART_BADGE), "2"))
-    assert base_page_object.wait.until(EC.visibility_of_element_located(InventoryPage.DELETE_ONESIE_ITEM_BUTTON))
+    first_item = inventory_object.add_items_to_cart_and_return_objects()
+    assert first_item[0].find_element(*InventoryPage.BTN_SECONDARY)
+    assert inventory_object.wait.until(EC.text_to_be_present_in_element((inventory_object.SHOPPING_CART_BADGE), "1"))
+    second_item = inventory_object.add_items_to_cart_and_return_objects()
+    assert inventory_object.wait.until(EC.text_to_be_present_in_element((inventory_object.SHOPPING_CART_BADGE), "2"))
+    assert second_item[0].find_element(*InventoryPage.BTN_SECONDARY)
 
 def test_delete_items_from_cart_with_standard_user(driver):
-    test_item = BasePage(driver)
     inventory_object = InventoryPage(driver)
     Login.login_with_standard_user(driver)
-    inventory_object.add_two_items_to_cart(driver)
-    assert test_item.wait.until(EC.text_to_be_present_in_element((inventory_object.SHOPPING_CART_BADGE), "2"))
-    inventory_object.delete_backpack_from_cart_on_item_block_button(driver)
-    assert test_item.wait.until(EC.text_to_be_present_in_element((inventory_object.SHOPPING_CART_BADGE), "1"))
-    assert test_item.wait.until(EC.visibility_of_element_located(InventoryPage.ADD_BACKPACK_ITEM_BUTTON))
-    inventory_object.delete_onesie_from_cart_on_item_block_button(driver)
-    assert test_item.wait.until(EC.invisibility_of_element_located(inventory_object.SHOPPING_CART_BADGE))
-    assert test_item.wait.until(EC.visibility_of_element_located(InventoryPage.ADD_ONESIE_ITEM_BUTTON))
+    list_items = inventory_object.add_items_to_cart_and_return_objects(2)
+    assert inventory_object.wait.until(EC.text_to_be_present_in_element((inventory_object.SHOPPING_CART_BADGE), "2"))
+    list_items[0].find_element(*inventory_object.BTN_SECONDARY).click()
+    assert inventory_object.wait.until(EC.text_to_be_present_in_element((inventory_object.SHOPPING_CART_BADGE), "1"))
+    assert inventory_object.wait.until(EC.visibility_of(list_items[0].find_element(*inventory_object.BTN_PRIMARY)))
+    inventory_object.wait.until(EC.visibility_of(list_items[1].find_element(*inventory_object.BTN_SECONDARY))).click()
+    assert inventory_object.wait.until(EC.invisibility_of_element_located(inventory_object.SHOPPING_CART_BADGE))
+    assert inventory_object.wait.until(EC.visibility_of(list_items[1].find_element(*inventory_object.BTN_PRIMARY)))
 
 
 def test_burger_menu_open(driver):
@@ -152,26 +151,23 @@ def test_open_shopping_cart_from_inventory(driver):
     inventory_object.click_cart_icon_and_go_to_cart()
     assert driver.current_url == inventory_object.CART_URL
 
-def test_go_to_sauce_labs_backpack_cart_from_inventory_on_image(driver):
+def test_go_to_item_cart_from_inventory_on_image(driver):
     inventory_object = InventoryPage(driver)
     login_object = Login(driver)
+    item_card = ItemCard(driver)
     login_object.login_with_standard_user(driver)
-    driver.find_element(By.ID, "item_4_img_link").click()
-    assert driver.current_url == "https://www.saucedemo.com/inventory-item.html?id=4"
+    inventory_list = inventory_object.get_list_items()
+    item_id = inventory_object.get_item_id_on_inventory_page(inventory_list[0])
+    inventory_list[0].find_element(*inventory_object.INVENTORY_ITEM_IMG).click()
+    assert driver.current_url == item_card.get_item_card_url(item_id)
 
 
-def test_go_to_sauce_labs_backpack_cart_from_inventory_on_name(driver):
+def test_go_to_item_cart_from_inventory_on_name(driver):
     inventory_object = InventoryPage(driver)
     login_object = Login(driver)
+    item_card = ItemCard(driver)
     login_object.login_with_standard_user(driver)
-    inventory_object.go_to_sauce_labs_backpack()
-    assert driver.current_url == "https://www.saucedemo.com/inventory-item.html?id=4"
-
-def test_test_test(driver):
-    inventory_object = InventoryPage(driver)
-    login_object = Login(driver)
-    login_object.login_with_standard_user(driver)
-    name_price = inventory_object.add_items_to_cart_and_return_name_and_price(3)
-    time.sleep(2)
-    print(name_price)
-    assert inventory_object.wait.until(EC.text_to_be_present_in_element(inventory_object.SHOPPING_CART_BADGE, "3"))
+    inventory_list = inventory_object.get_list_items()
+    item_id = inventory_object.get_item_id_on_inventory_page(inventory_list[0])
+    inventory_object.wait.until(EC.visibility_of(inventory_list[0].find_element(*inventory_object.INVENTORY_ITEM_NAME))).click()
+    assert driver.current_url == item_card.get_item_card_url(item_id)

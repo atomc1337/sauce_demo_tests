@@ -31,7 +31,9 @@ class InventoryPage(BasePage):
     INVENTORY_ITEM_PRICE = (By.CLASS_NAME, "inventory_item_price")
     INVENTORY_ITEM_NAME = (By.CLASS_NAME, "inventory_item_name")
     INVENTORY_ITEM = (By.CLASS_NAME, "inventory_item")
-
+    BTN_SECONDARY = (By.CLASS_NAME, "btn_secondary") #кнопка Remove у товара
+    BTN_PRIMARY = (By.CLASS_NAME, "btn_primary") #кнопка Add To Card у товара
+    INVENTORY_ITEM_IMG = (By.CLASS_NAME, "inventory_item_img") #картинка у товара
     def __init__(self, driver):
         super().__init__(driver)
 
@@ -45,29 +47,37 @@ class InventoryPage(BasePage):
         add_item = driver.find_element(*InventoryPage.ADD_BACKPACK_ITEM_BUTTON)
         return add_item.click()
 
-    @staticmethod
+    '''@staticmethod
     def delete_backpack_from_cart_on_item_block_button(driver):
         delete_item = driver.find_element(*InventoryPage.DELETE_BACKPACK_ITEM_BUTTON)
-        return delete_item.click()
+        return delete_item.click()'''
 
-    @staticmethod
-    def add_onesie_to_cart(driver):
-        scroll = ActionChains(driver)
-        basepage_object = BasePage(driver)
-        add_item = basepage_object.wait.until(EC.visibility_of_element_located(InventoryPage.ADD_ONESIE_ITEM_BUTTON))
-        scroll.move_to_element(add_item).perform()
-        return add_item.click()
+
+    def add_items_to_cart_and_return_objects(self, count=1):
+        items_list = self.driver.find_elements(*(self.INVENTORY_ITEM))
+        i = 0
+        objects = []
+        for el in items_list:
+            if i == count:
+                break
+            try:
+                self.wait.until(EC.visibility_of(el.find_element(*self.BTN_PRIMARY))).click()
+                i += 1
+            except:
+                continue
+            objects.append(el)
+        return objects
 
     @staticmethod
     def add_two_items_to_cart(driver):
         InventoryPage.add_backpack_to_cart(driver)
-        InventoryPage.add_onesie_to_cart(driver)
+        InventoryPage.add_items_to_cart_and_return_objects()
 
 
-    @staticmethod
+    '''@staticmethod
     def delete_onesie_from_cart_on_item_block_button(driver):
         delete_item = driver.find_element(*InventoryPage.DELETE_ONESIE_ITEM_BUTTON)
-        return delete_item.click()
+        return delete_item.click()'''
 
     @staticmethod
     def open_burger_menu_from_inventory_page(driver):
@@ -117,15 +127,25 @@ class InventoryPage(BasePage):
         return self #self.driver.find_element(By.CSS_SELECTOR, f"[class='product_sort_container',option_value={option}]").click()
 
 
-    def go_to_sauce_labs_backpack(self):
+    '''def go_to_sauce_labs_backpack(self):
         self.wait.until(EC.visibility_of_element_located((By.XPATH, "//*[contains(@class, 'inventory_item_name') and text()='Sauce Labs Backpack']"))).click()
-        return self
+        return self'''
 
     def click_cart_icon_and_go_to_cart(self):
         self.wait.until(EC.visibility_of_element_located(self.SHOPPING_CART_LINK)).click()
         return self
 
-    def add_items_to_cart_and_return_name_and_price(self, count=1):
+
+    def get_list_items(self):
+        self.wait.until(EC.visibility_of_element_located(self.INVENTORY_ITEM))
+        return self.driver.find_elements(*self.INVENTORY_ITEM)
+
+    def get_item_id_on_inventory_page(self, inventory_list):
+        name_element = inventory_list.find_element(*self.INVENTORY_ITEM_NAME)
+        item_id = str(name_element.find_element(By.XPATH, "./..").get_attribute("id").split("_")[1])
+        return item_id
+
+"""    def add_items_to_cart_and_return_objects(self, count=1):
         items_list = self.driver.find_elements(*(self.INVENTORY_ITEM))
         i = 0
         name_price = []
@@ -137,3 +157,11 @@ class InventoryPage(BasePage):
             name_price_tuple = (el.find_element(*self.INVENTORY_ITEM_NAME).text, el.find_element(*self.INVENTORY_ITEM_PRICE).text)
             name_price.append(name_price_tuple)
         return name_price
+        
+            def add_items_to_cart_and_return_objects(self):
+        scroll = ActionChains(self, driver)
+        basepage_object = BasePage(driver)
+        add_item = basepage_object.wait.until(EC.visibility_of_element_located(InventoryPage.ADD_ONESIE_ITEM_BUTTON))
+        scroll.move_to_element(add_item).perform()
+        return add_item.click()
+        """

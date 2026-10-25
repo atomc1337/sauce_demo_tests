@@ -14,24 +14,28 @@ def test_go_to_inventory_by_arrow(driver):
     inventory_object = InventoryPage(driver)
     item_card_object = ItemCard(driver)
     login_object.login_with_standard_user(driver)
-    inventory_object.go_to_sauce_labs_backpack()
+    #inventory_object.go_to_sauce_labs_backpack()
+    items = inventory_object.get_list_items()
+    items[0].find_element(*inventory_object.INVENTORY_ITEM_NAME).click()
     driver.find_element(*item_card_object.BACK_TO_PRODUCTS).click()
     assert driver.current_url == inventory_object.INVENTORY_URL
 
-def test_add_sauce_labs_backpack_from_item_cart(driver):
+def test_add_item_from_item_cart(driver):
     login_object = Login(driver)
     inventory_object = InventoryPage(driver)
     login_object.login_with_standard_user(driver)
-    inventory_object.go_to_sauce_labs_backpack()
+    items = inventory_object.get_list_items()
+    items[0].find_element(*inventory_object.INVENTORY_ITEM_NAME).click()
     item_card_object = ItemCard(driver)
     driver.find_element(*item_card_object.ADD_TO_CARD).click()
     assert inventory_object.wait.until(EC.text_to_be_present_in_element(inventory_object.SHOPPING_CART_BADGE, "1"))
 
-def test_remove_sauce_labs_backpack_from_item_cart(driver):
+def test_remove_item_from_item_cart(driver):
     login_object = Login(driver)
     inventory_object = InventoryPage(driver)
     login_object.login_with_standard_user(driver)
-    inventory_object.go_to_sauce_labs_backpack()
+    items = inventory_object.get_list_items()
+    items[0].find_element(*inventory_object.INVENTORY_ITEM_NAME).click()
     item_card_object = ItemCard(driver)
     driver.find_element(*item_card_object.ADD_TO_CARD).click()
     inventory_object.wait.until(EC.visibility_of_element_located((item_card_object.REMOVE))).click()
@@ -41,10 +45,23 @@ def test_go_to_cart_from_item(driver):
     login_object = Login(driver)
     inventory_object = InventoryPage(driver)
     login_object.login_with_standard_user(driver)
-    inventory_object.go_to_sauce_labs_backpack()
+    items = inventory_object.get_list_items()
+    items[0].find_element(*inventory_object.INVENTORY_ITEM_NAME).click()
     driver.find_element(*inventory_object.SHOPPING_CART_LINK).click()
     assert driver.current_url == inventory_object.CART_URL
 
 
-
+def test_check_item_name_price_on_card_and_inventory(driver):
+    login = Login(driver)
+    inventory = InventoryPage(driver)
+    item_cart = ItemCard(driver)
+    login.login_with_standard_user(driver)
+    items = inventory.get_list_items()
+    inv_item_name = items[0].find_element(*inventory.INVENTORY_ITEM_NAME).text
+    inv_item_price = items[0].find_element(*inventory.INVENTORY_ITEM_PRICE).text
+    items[0].find_element(*inventory.INVENTORY_ITEM_NAME).click()
+    cart_item_name = item_cart.wait.until(EC.visibility_of(driver.find_element(*item_cart.CART_ITEM_NAME))).text
+    cart_item_price = item_cart.wait.until(EC.visibility_of(driver.find_element(*item_cart.CART_ITEM_PRICE))).text
+    assert inv_item_name == cart_item_name
+    assert inv_item_price == cart_item_price
 
