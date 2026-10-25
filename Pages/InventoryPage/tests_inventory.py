@@ -36,67 +36,61 @@ def test_delete_items_from_cart_with_standard_user(driver):
 def test_burger_menu_open(driver):
     inventory_object = InventoryPage(driver)
     login_object = Login(driver)
-    base_page_object = BasePage(driver)
     login_object.login_with_standard_user()
     inventory_object.open_burger_menu_from_inventory_page()
-    assert base_page_object.wait.until(EC.visibility_of_element_located(inventory_object.BURGER_MENU))
-    assert base_page_object.wait.until(EC.visibility_of_element_located(inventory_object.BURGER_MENU_ALL_ITEMS))
-    assert base_page_object.wait.until(EC.visibility_of_element_located(inventory_object.BURGER_MENU_CLOSE))
-    assert base_page_object.wait.until(EC.visibility_of_element_located(inventory_object.BURGER_MENU_LOGOUT))
-    assert base_page_object.wait.until(EC.visibility_of_element_located(inventory_object.BURGER_MENU_RESET_APP_STATE))
+    assert inventory_object.wait.until(EC.visibility_of_element_located(inventory_object.BURGER_MENU))
+    assert inventory_object.wait.until(EC.visibility_of_element_located(inventory_object.BURGER_MENU_ALL_ITEMS))
+    assert inventory_object.wait.until(EC.visibility_of_element_located(inventory_object.BURGER_MENU_CLOSE))
+    assert inventory_object.wait.until(EC.visibility_of_element_located(inventory_object.BURGER_MENU_LOGOUT))
+    assert inventory_object.wait.until(EC.visibility_of_element_located(inventory_object.BURGER_MENU_RESET_APP_STATE))
 
 
 def test_burger_menu_close(driver):
     inventory_object = InventoryPage(driver)
     login_object = Login(driver)
-    base_page_object = BasePage(driver)
     login_object.login_with_standard_user()
     inventory_object.open_burger_menu_from_inventory_page()
-    assert base_page_object.wait.until(EC.visibility_of_element_located(inventory_object.BURGER_MENU))
+    assert inventory_object.wait.until(EC.visibility_of_element_located(inventory_object.BURGER_MENU))
     inventory_object.close_burger_menu_from_inventory_page()
-    assert base_page_object.wait.until(EC.invisibility_of_element_located(inventory_object.BURGER_MENU))
+    assert inventory_object.wait.until(EC.invisibility_of_element_located(inventory_object.BURGER_MENU))
 
 
 def test_click_burger_menu_all_items_from_inventory(driver):
     inventory_object = InventoryPage(driver)
     login_object = Login(driver)
-    base_page_object = BasePage(driver)
     login_object.login_with_standard_user()
     inventory_object.open_burger_menu_from_inventory_page()
-    base_page_object.wait.until(EC.visibility_of_element_located(inventory_object.BURGER_MENU_ALL_ITEMS))
-    assert driver.current_url == base_page_object.INVENTORY_URL
+    inventory_object.wait.until(EC.visibility_of_element_located(inventory_object.BURGER_MENU_ALL_ITEMS)).click()
+    assert driver.current_url == inventory_object.INVENTORY_URL
 
 
 def test_click_burger_menu_about_from_inventory(driver):
     inventory_object = InventoryPage(driver)
     login_object = Login(driver)
-    base_page_object = BasePage(driver)
     login_object.login_with_standard_user()
     inventory_object.open_burger_menu_from_inventory_page()
-    base_page_object.wait.until(EC.visibility_of_element_located(inventory_object.BURGER_MENU_ABOUT))
-    assert driver.current_url == base_page_object.ABOUT_URL
+    inventory_object.wait.until(EC.visibility_of_element_located(inventory_object.BURGER_MENU_ABOUT))
+    assert driver.current_url == inventory_object.ABOUT_URL
 
 
 def test_click_burger_menu_logout_from_inventory(driver):
     inventory_object = InventoryPage(driver)
     login_object = Login(driver)
-    base_page_object = BasePage(driver)
     login_object.login_with_standard_user()
     inventory_object.open_burger_menu_from_inventory_page()
     inventory_object.logout_from_inventory_page_menu()
-    assert driver.current_url == base_page_object.LOGIN_URL
+    assert driver.current_url == inventory_object.LOGIN_URL
 
 
 def test_click_burger_menu_reset_app_state_from_inventory(driver):
     inventory_object = InventoryPage(driver)
     login_object = Login(driver)
-    base_page_object = BasePage(driver)
     login_object.login_with_standard_user()
     inventory_object.add_items_to_cart_and_return_objects(2)
-    assert base_page_object.wait.until(EC.text_to_be_present_in_element(inventory_object.SHOPPING_CART_BADGE, "2"))
+    assert inventory_object.wait.until(EC.text_to_be_present_in_element(inventory_object.SHOPPING_CART_BADGE, "2"))
     inventory_object.open_burger_menu_from_inventory_page()
     inventory_object.click_reset_app_state_button()
-    assert base_page_object.wait.until(EC.invisibility_of_element_located(inventory_object.SHOPPING_CART_BADGE))
+    assert inventory_object.wait.until(EC.invisibility_of_element_located(inventory_object.SHOPPING_CART_BADGE))
 
 
 def test_sort_list_items_by_Z_to_A(driver):

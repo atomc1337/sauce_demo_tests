@@ -13,6 +13,7 @@ class ItemCard(BasePage):
     REMOVE = (By.ID, "remove")
     CART_ITEM_PRICE = (By.CLASS_NAME, "inventory_details_price")
     CART_ITEM_NAME = (By.CLASS_NAME, "inventory_details_name")
+
     def __init__(self, driver):
         super().__init__(driver)
 

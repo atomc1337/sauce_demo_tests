@@ -14,11 +14,11 @@ def test_go_to_inventory_by_arrow(driver):
     inventory_object = InventoryPage(driver)
     item_card_object = ItemCard(driver)
     login_object.login_with_standard_user()
-    #inventory_object.go_to_sauce_labs_backpack()
     items = inventory_object.get_list_items()
     items[0].find_element(*inventory_object.INVENTORY_ITEM_NAME).click()
     driver.find_element(*item_card_object.BACK_TO_PRODUCTS).click()
     assert driver.current_url == inventory_object.INVENTORY_URL
+
 
 def test_add_item_from_item_cart(driver):
     login_object = Login(driver)
@@ -30,6 +30,7 @@ def test_add_item_from_item_cart(driver):
     driver.find_element(*item_card_object.ADD_TO_CARD).click()
     assert inventory_object.wait.until(EC.text_to_be_present_in_element(inventory_object.SHOPPING_CART_BADGE, "1"))
 
+
 def test_remove_item_from_item_cart(driver):
     login_object = Login(driver)
     inventory_object = InventoryPage(driver)
@@ -40,6 +41,7 @@ def test_remove_item_from_item_cart(driver):
     driver.find_element(*item_card_object.ADD_TO_CARD).click()
     inventory_object.wait.until(EC.visibility_of_element_located((item_card_object.REMOVE))).click()
     assert inventory_object.wait.until(EC.invisibility_of_element_located(inventory_object.SHOPPING_CART_BADGE))
+
 
 def test_go_to_cart_from_item(driver):
     login_object = Login(driver)

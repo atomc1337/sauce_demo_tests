@@ -61,6 +61,7 @@ def test_click_checkout_on_cart_page(driver):
     cart_object.click_checkout_on_cart_page()
     assert driver.current_url == cart_object.CHECKOUT_STEP_ONE_URL
 
+
 def test_check_added_item_price_and_name(driver):
     login_object = Login(driver)
     inventory_object = InventoryPage(driver)

@@ -19,14 +19,12 @@ class Cart(BasePage):
     ITEM_PRICE = (By.CLASS_NAME, "inventory_item_price")
     CART_ITEM_NAME = (By.CLASS_NAME, "inventory_item_name")
 
-
     def __init__(self, driver):
         super().__init__(driver)
 
     def click_checkout_on_cart_page(self):
         self.wait.until(EC.visibility_of_element_located(self.CHECKOUT_BUTTON)).click()
         return self
-
 
     def get_cart_items(self):
         items = self.driver.find_elements(*self.CART_ITEM)

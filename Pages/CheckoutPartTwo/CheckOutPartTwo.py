@@ -10,7 +10,6 @@ from selenium.webdriver.support.wait import WebDriverWait
 from Pages.Cart.Cart import Cart
 from Pages.CheckoutPartOne.CheckoutPartOne import CheckoutPartOne
 import pdb
-from decimal import Decimal, ROUND_CEILING
 
 class CheckoutPartTwo(BasePage):
     def __init__(self, driver):

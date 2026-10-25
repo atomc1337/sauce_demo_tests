@@ -10,7 +10,6 @@ class BasePage:
     CHECKOUT_STEP_ONE_URL = "https://www.saucedemo.com/checkout-step-one.html"
     CHECKOUT_STEP_TWO_URL = "https://www.saucedemo.com/checkout-step-two.html"
     CHECKOUT_COMPLETE_URL = "https://www.saucedemo.com/checkout-complete.html"
-    #ONSIE_ITEM_URL = "https://www.saucedemo.com/inventory-item.html?id=2"
     ABOUT_URL = "https://saucelabs.com/about.html"
     SHOPPING_CART_BADGE = (By.CLASS_NAME, "shopping_cart_badge")
     SHOPPING_CART_LINK = (By.CLASS_NAME, "shopping_cart_link")
@@ -21,13 +20,6 @@ class BasePage:
     ERROR_MESSAGE_CONTAINER = (By.CLASS_NAME, "error-message-container")
     ERROR_BUTTON = (By.CLASS_NAME, "error-button")
 
-
-
     def __init__(self, driver: WebDriver, timeout=5):
-        self.wait = WebDriverWait(driver, timeout)
         self.driver: WebDriver = driver
-
-
-
-
-
+        self.wait = WebDriverWait(driver, timeout)

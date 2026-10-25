@@ -1,10 +1,8 @@
 import time
-
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.action_chains import ActionChains
 from Pages.LoginPage.Login import Login
-from Pages.base_page import BasePage
 from Pages.InventoryPage.InventoryPage import InventoryPage
 from selenium.webdriver.support.wait import WebDriverWait
 from Pages.Cart.Cart import Cart
@@ -12,6 +10,8 @@ from Pages.CheckoutPartOne.CheckoutPartOne import CheckoutPartOne
 import pdb
 from Pages.CheckoutPartTwo.CheckOutPartTwo import CheckoutPartTwo
 from Pages.ItemCart.ItemCard import ItemCard
+
+
 def test_click_cancel_button(driver):
     login_object = Login(driver)
     inventory_object = InventoryPage(driver)
@@ -59,6 +59,7 @@ def test_click_finish_and_go_to_checkout_complete(driver):
     assert driver.current_url == checkout_part_two_object.CHECKOUT_COMPLETE_URL
     assert checkout_part_two_object.wait.until(EC.invisibility_of_element_located(checkout_part_two_object.SHOPPING_CART_BADGE))
     assert checkout_part_two_object.wait.until(EC.text_to_be_present_in_element(checkout_part_two_object.COMPLETE_HEADER, "Thank you for your order!"))
+
 
 def test_check_item_name_price(driver):
     login_object = Login(driver)
