@@ -15,7 +15,7 @@ def test_click_continue_shopping(driver):
     login_object = Login(driver)
     inventory_object = InventoryPage(driver)
     cart_object = Cart(driver)
-    login_object.login_with_standard_user(driver)
+    login_object.login_with_standard_user()
     inventory_object.add_items_to_cart_and_return_objects()
     inventory_object.click_cart_icon_and_go_to_cart()
     driver.find_element(*cart_object.CONTINUE_SHOPPING).click()
@@ -26,7 +26,7 @@ def test_delete_item_from_cart(driver):
     login_object = Login(driver)
     inventory_object = InventoryPage(driver)
     cart = Cart(driver)
-    login_object.login_with_standard_user(driver)
+    login_object.login_with_standard_user()
     inventory_object.add_items_to_cart_and_return_objects()
     assert inventory_object.wait.until(EC.text_to_be_present_in_element(inventory_object.SHOPPING_CART_BADGE, "1"))
     inventory_object.click_cart_icon_and_go_to_cart()
@@ -42,7 +42,7 @@ def test_go_to_item_page_from_cart(driver):
     inventory_object = InventoryPage(driver)
     cart = Cart(driver)
     item_card_object = ItemCard(driver)
-    login_object.login_with_standard_user(driver)
+    login_object.login_with_standard_user()
     inventory_list = inventory_object.add_items_to_cart_and_return_objects()
     id = inventory_object.get_item_id_on_inventory_page(cart.wait.until(EC.visibility_of(inventory_list[0])))
     inventory_object.click_cart_icon_and_go_to_cart()
@@ -55,7 +55,7 @@ def test_click_checkout_on_cart_page(driver):
     login_object = Login(driver)
     inventory_object = InventoryPage(driver)
     cart_object = Cart(driver)
-    login_object.login_with_standard_user(driver)
+    login_object.login_with_standard_user()
     inventory_object.add_items_to_cart_and_return_objects()
     inventory_object.click_cart_icon_and_go_to_cart()
     cart_object.click_checkout_on_cart_page()
@@ -65,13 +65,16 @@ def test_check_added_item_price_and_name(driver):
     login_object = Login(driver)
     inventory_object = InventoryPage(driver)
     cart = Cart(driver)
-    login_object.login_with_standard_user(driver)
+    login_object.login_with_standard_user()
     inv_items = inventory_object.add_items_to_cart_and_return_objects()
-    inv_item_price = inv_items[0].find_element(*inventory_object.INVENTORY_ITEM_PRICE).text
-    inv_item_name = inv_items[0].find_element(*inventory_object.INVENTORY_ITEM_NAME).text
+    inv_item_price = cart.wait.until(EC.visibility_of(inv_items[0].find_element(*inventory_object.INVENTORY_ITEM_PRICE))).text
+    inv_item_name = cart.wait.until(EC.visibility_of(inv_items[0].find_element(*inventory_object.INVENTORY_ITEM_NAME))).text
     inventory_object.click_cart_icon_and_go_to_cart()
     cart_items = cart.get_cart_items()
-    cart_item_price = cart_items[0].find_element(*inventory_object.INVENTORY_ITEM_PRICE).text
-    cart_item_name = cart_items[0].find_element(*inventory_object.INVENTORY_ITEM_NAME).text
+    cart_item_price = cart.wait.until(EC.visibility_of(cart_items[0].find_element(*inventory_object.INVENTORY_ITEM_PRICE))).text
+    cart_item_name = cart.wait.until(EC.visibility_of(cart_items[0].find_element(*inventory_object.INVENTORY_ITEM_NAME))).text
     assert inv_item_price == cart_item_price
     assert inv_item_name == cart_item_name
+
+
+

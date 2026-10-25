@@ -31,9 +31,9 @@ class Login(BasePage):
         return ("error" in red_username, "error" in red_userpass)
 
 
-    @staticmethod
-    def login_with_standard_user(driver):
-        login_as_user = Login(driver)
+
+    def login_with_standard_user(self):
+        login_as_user = Login(self.driver)
         return login_as_user.login("standard_user", "secret_sauce")
 
     @staticmethod
@@ -60,5 +60,10 @@ class Login(BasePage):
     def login_with_visual_user(driver):
         login_as_user = Login(driver)
         return login_as_user.login("visual_user", "secret_sauce")
+
+    def wait_for_page_to_load(self):
+        self.wait.until(EC.url_contains("https://www.saucedemo.com/"))
+        self.wait.until(EC.visibility_of_element_located((By.CLASS_NAME, "login_wrapper")))
+        return self
 
 

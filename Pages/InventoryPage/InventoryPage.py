@@ -1,3 +1,4 @@
+import pdb
 import time
 
 from selenium.webdriver.common.by import By
@@ -11,10 +12,6 @@ from selenium.webdriver.support.ui import Select
 
 
 class InventoryPage(BasePage):
-    ADD_BACKPACK_ITEM_BUTTON = (By.ID, "add-to-cart-sauce-labs-backpack")
-    ADD_ONESIE_ITEM_BUTTON = (By.ID, "add-to-cart-sauce-labs-onesie")
-    DELETE_BACKPACK_ITEM_BUTTON = (By.ID, "remove-sauce-labs-backpack")
-    DELETE_ONESIE_ITEM_BUTTON = (By.ID, "remove-sauce-labs-onesie")
     BURGER_MENU_OPEN_BUTTON = (By.ID, "react-burger-menu-btn")
     BURGER_MENU_LOGOUT = (By.ID, "logout_sidebar_link")
     BURGER_MENU_CLOSE = (By.ID, "react-burger-cross-btn")
@@ -42,15 +39,7 @@ class InventoryPage(BasePage):
         WebDriverWait(self.driver, 5).until(EC.visibility_of_element_located((By.CLASS_NAME, "page_wrapper")))
         return self
 
-    @staticmethod
-    def add_backpack_to_cart(driver):
-        add_item = driver.find_element(*InventoryPage.ADD_BACKPACK_ITEM_BUTTON)
-        return add_item.click()
 
-    '''@staticmethod
-    def delete_backpack_from_cart_on_item_block_button(driver):
-        delete_item = driver.find_element(*InventoryPage.DELETE_BACKPACK_ITEM_BUTTON)
-        return delete_item.click()'''
 
 
     def add_items_to_cart_and_return_objects(self, count=1):
@@ -68,50 +57,49 @@ class InventoryPage(BasePage):
             objects.append(el)
         return objects
 
-    @staticmethod
-    def add_two_items_to_cart(driver):
-        InventoryPage.add_backpack_to_cart(driver)
-        InventoryPage.add_items_to_cart_and_return_objects()
 
 
-    '''@staticmethod
-    def delete_onesie_from_cart_on_item_block_button(driver):
-        delete_item = driver.find_element(*InventoryPage.DELETE_ONESIE_ITEM_BUTTON)
-        return delete_item.click()'''
 
-    @staticmethod
-    def open_burger_menu_from_inventory_page(driver):
-        base_page_object = BasePage(driver)
-        open_menu = base_page_object.wait.until(EC.visibility_of_element_located(InventoryPage.BURGER_MENU_OPEN_BUTTON))
+
+    def open_burger_menu_from_inventory_page(self):
+        base_page_object = BasePage(self.driver)
+        open_menu = base_page_object.wait.until(EC.visibility_of_element_located(self.BURGER_MENU_OPEN_BUTTON))
         return open_menu.click()
 
 
-    @staticmethod
-    def logout_from_inventory_page_menu(driver):
-        base_page_object = BasePage(driver)
-        logout = base_page_object.wait.until(EC.visibility_of_element_located(InventoryPage.BURGER_MENU_LOGOUT))
+
+    def logout_from_inventory_page_menu(self):
+        base_page_object = BasePage(self.driver)
+        logout = base_page_object.wait.until(EC.visibility_of_element_located(self.BURGER_MENU_LOGOUT))
         return logout.click()
 
-    @staticmethod
-    def close_burger_menu_from_inventory_page(driver):
-        base_page_object = BasePage(driver)
-        close = base_page_object.wait.until(EC.visibility_of_element_located(InventoryPage.BURGER_MENU_CLOSE))
+
+    def close_burger_menu_from_inventory_page(self):
+        base_page_object = BasePage(self.driver)
+        close = base_page_object.wait.until(EC.visibility_of_element_located(self.BURGER_MENU_CLOSE))
         return close.click()
 
-    @staticmethod
-    def click_reset_app_state_button(driver):
-        base_page_object = BasePage(driver)
-        reset_app_state = base_page_object.wait.until(EC.visibility_of_element_located(InventoryPage.BURGER_MENU_RESET_APP_STATE))
+
+    def click_reset_app_state_button(self):
+        base_page_object = BasePage(self.driver)
+        reset_app_state = base_page_object.wait.until(EC.visibility_of_element_located(self.BURGER_MENU_RESET_APP_STATE))
         return reset_app_state.click()
 
     def get_inventory_items_names(self):
         inventory_items_names = self.driver.find_elements(*self.INVENTORY_ITEM_NAME)
         return [item_names.text for item_names in inventory_items_names]
 
-    def get_inventory_items_price(self):
-        inventory_items_prices = self.driver.find_elements(*self.INVENTORY_ITEM_PRICE)
+
+    def find_items_prices_from_inventory_list(self):
+        return self.driver.find_elements(*self.INVENTORY_ITEM_PRICE)
+
+
+    def get_clean_inventory_items_price(self, items_prices):
         float_inventory_items_prices = []
-        for item_price in inventory_items_prices:
+        if not isinstance(items_prices, list):
+            items_prices = [items_prices]
+        for item_price in items_prices:
+            #pdb.set_trace()
             item_price_float = item_price.text.replace("$", "")
             float_inventory_items_prices.append(float(item_price_float))
         return float_inventory_items_prices
@@ -127,9 +115,6 @@ class InventoryPage(BasePage):
         return self #self.driver.find_element(By.CSS_SELECTOR, f"[class='product_sort_container',option_value={option}]").click()
 
 
-    '''def go_to_sauce_labs_backpack(self):
-        self.wait.until(EC.visibility_of_element_located((By.XPATH, "//*[contains(@class, 'inventory_item_name') and text()='Sauce Labs Backpack']"))).click()
-        return self'''
 
     def click_cart_icon_and_go_to_cart(self):
         self.wait.until(EC.visibility_of_element_located(self.SHOPPING_CART_LINK)).click()
@@ -140,28 +125,7 @@ class InventoryPage(BasePage):
         self.wait.until(EC.visibility_of_element_located(self.INVENTORY_ITEM))
         return self.driver.find_elements(*self.INVENTORY_ITEM)
 
-    def get_item_id_on_inventory_page(self, inventory_list):
-        name_element = inventory_list.find_element(*self.INVENTORY_ITEM_NAME)
+    def get_item_id_on_inventory_page(self, inventory_item):
+        name_element = inventory_item.find_element(*self.INVENTORY_ITEM_NAME)
         item_id = str(name_element.find_element(By.XPATH, "./..").get_attribute("id").split("_")[1])
         return item_id
-
-"""    def add_items_to_cart_and_return_objects(self, count=1):
-        items_list = self.driver.find_elements(*(self.INVENTORY_ITEM))
-        i = 0
-        name_price = []
-        for el in items_list:
-            if i == count:
-                break
-            el.find_element(By.CLASS_NAME, "btn_inventory").click()
-            i += 1
-            name_price_tuple = (el.find_element(*self.INVENTORY_ITEM_NAME).text, el.find_element(*self.INVENTORY_ITEM_PRICE).text)
-            name_price.append(name_price_tuple)
-        return name_price
-        
-            def add_items_to_cart_and_return_objects(self):
-        scroll = ActionChains(self, driver)
-        basepage_object = BasePage(driver)
-        add_item = basepage_object.wait.until(EC.visibility_of_element_located(InventoryPage.ADD_ONESIE_ITEM_BUTTON))
-        scroll.move_to_element(add_item).perform()
-        return add_item.click()
-        """

@@ -15,6 +15,6 @@ class Helper(BasePage):
         endpoint_to_message = (object_of_login.CHECKOUT_COMPLETE_URL.split('.com', 1)[1])
         assert object_of_login.wait.until(EC.url_contains("https://www.saucedemo.com/"))
         assert object_of_login.is_field_are_red_with_error(driver) == (True, True)
-        assert EC.text_to_be_present_in_element(object_of_login.ERROR_BLOCK, f"Epic sadface: You can only access '{endpoint_to_message}' when you are logged in.")
+        assert EC.text_to_be_present_in_element(object_of_login.ERROR_MESSAGE_CONTAINER, f"Epic sadface: You can only access '{endpoint_to_message}' when you are logged in.")
         assert object_of_login.driver.find_element(*object_of_login.USERNAME_ERROR_ICON).is_displayed()
         assert object_of_login.driver.find_element(*object_of_login.USERPASS_ERROR_ICON).is_displayed()

@@ -76,3 +76,28 @@ str_t = "tet"
 int_t = 2
 li_t = [2, "tet"]
 arr_t = {2, 4, "tet"}
+
+
+'''def test_try_to_go_to_inventory_without_login(driver):
+    object_of_helper = Helper(driver)
+    object_of_helper.check_pages_to_go(driver, object_of_helper.INVENTORY_URL)
+
+
+def test_try_to_go_to_cart_without_login(driver):
+    object_of_helper = Helper(driver)
+    object_of_helper.check_pages_to_go(driver, BasePage.CART_URL)
+
+
+def test_try_to_go_to_checkout_step_one_without_login(driver):
+    object_of_helper = Helper(driver)
+    object_of_helper.check_pages_to_go(driver, BasePage.CHECKOUT_STEP_ONE_URL)
+
+
+def test_try_to_go_to_checkout_step_two_without_login(driver):
+    object_of_helper = Helper(driver)
+    object_of_helper.check_pages_to_go(driver, BasePage.CHECKOUT_STEP_TWO_URL)
+
+
+def test_try_to_go_to_checkout_complete_without_login(driver):
+    object_of_helper = Helper(driver)
+    object_of_helper.check_pages_to_go(driver, BasePage.CHECKOUT_COMPLETE_URL)'''

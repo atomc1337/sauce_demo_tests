@@ -13,7 +13,7 @@ def test_go_to_inventory_by_arrow(driver):
     login_object = Login(driver)
     inventory_object = InventoryPage(driver)
     item_card_object = ItemCard(driver)
-    login_object.login_with_standard_user(driver)
+    login_object.login_with_standard_user()
     #inventory_object.go_to_sauce_labs_backpack()
     items = inventory_object.get_list_items()
     items[0].find_element(*inventory_object.INVENTORY_ITEM_NAME).click()
@@ -23,7 +23,7 @@ def test_go_to_inventory_by_arrow(driver):
 def test_add_item_from_item_cart(driver):
     login_object = Login(driver)
     inventory_object = InventoryPage(driver)
-    login_object.login_with_standard_user(driver)
+    login_object.login_with_standard_user()
     items = inventory_object.get_list_items()
     items[0].find_element(*inventory_object.INVENTORY_ITEM_NAME).click()
     item_card_object = ItemCard(driver)
@@ -33,7 +33,7 @@ def test_add_item_from_item_cart(driver):
 def test_remove_item_from_item_cart(driver):
     login_object = Login(driver)
     inventory_object = InventoryPage(driver)
-    login_object.login_with_standard_user(driver)
+    login_object.login_with_standard_user()
     items = inventory_object.get_list_items()
     items[0].find_element(*inventory_object.INVENTORY_ITEM_NAME).click()
     item_card_object = ItemCard(driver)
@@ -44,7 +44,7 @@ def test_remove_item_from_item_cart(driver):
 def test_go_to_cart_from_item(driver):
     login_object = Login(driver)
     inventory_object = InventoryPage(driver)
-    login_object.login_with_standard_user(driver)
+    login_object.login_with_standard_user()
     items = inventory_object.get_list_items()
     items[0].find_element(*inventory_object.INVENTORY_ITEM_NAME).click()
     driver.find_element(*inventory_object.SHOPPING_CART_LINK).click()
@@ -55,7 +55,7 @@ def test_check_item_name_price_on_card_and_inventory(driver):
     login = Login(driver)
     inventory = InventoryPage(driver)
     item_cart = ItemCard(driver)
-    login.login_with_standard_user(driver)
+    login.login_with_standard_user()
     items = inventory.get_list_items()
     inv_item_name = items[0].find_element(*inventory.INVENTORY_ITEM_NAME).text
     inv_item_price = items[0].find_element(*inventory.INVENTORY_ITEM_PRICE).text

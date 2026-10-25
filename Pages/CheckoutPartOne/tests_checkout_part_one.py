@@ -18,7 +18,7 @@ def test_click_cancel(driver):
     inventory_object = InventoryPage(driver)
     cart_object = Cart(driver)
     checkout_part_one_object = CheckoutPartOne(driver)
-    login_object.login_with_standard_user(driver)
+    login_object.login_with_standard_user()
     inventory_object.add_items_to_cart_and_return_objects()
     inventory_object.click_cart_icon_and_go_to_cart()
     cart_object.click_checkout_on_cart_page()
@@ -31,7 +31,7 @@ def test_click_continue_with_correct_data(driver):
     inventory_object = InventoryPage(driver)
     cart_object = Cart(driver)
     checkout_part_one_object = CheckoutPartOne(driver)
-    login_object.login_with_standard_user(driver)
+    login_object.login_with_standard_user()
     inventory_object.add_items_to_cart_and_return_objects()
     inventory_object.click_cart_icon_and_go_to_cart()
     cart_object.click_checkout_on_cart_page()
@@ -53,7 +53,7 @@ def test_click_continue_without_correct_data(driver, user_data):
     cart_object = Cart(driver)
     checkout_part_one_object = CheckoutPartOne(driver)
     first_name, last_name, postal_code, error_message = user_data
-    login_object.login_with_standard_user(driver)
+    login_object.login_with_standard_user()
     inventory_object.add_items_to_cart_and_return_objects()
     inventory_object.click_cart_icon_and_go_to_cart()
     cart_object.click_checkout_on_cart_page()
@@ -74,7 +74,7 @@ def test_close_error_message_by_click_on_xmark(driver):
     inventory_object = InventoryPage(driver)
     cart_object = Cart(driver)
     checkout_part_one_object = CheckoutPartOne(driver)
-    login_object.login_with_standard_user(driver)
+    login_object.login_with_standard_user()
     inventory_object.add_items_to_cart_and_return_objects()
     inventory_object.click_cart_icon_and_go_to_cart()
     cart_object.click_checkout_on_cart_page()
@@ -86,6 +86,5 @@ def test_close_error_message_by_click_on_xmark(driver):
     checkout_part_one_object.wait.until(EC.visibility_of_element_located(checkout_part_one_object.ERROR_BUTTON)).click()
     assert "" not in error_box
     first_name_classes = driver.find_element(*checkout_part_one_object.FIRST_NAME_FIELD).get_attribute("class").split()
-    pdb.set_trace()
     assert "error" not in first_name_classes
 
