@@ -1,14 +1,6 @@
-import time
-import click
-import pytest
-from selenium import webdriver
-from selenium.webdriver.chrome.service import Service
-from selenium.webdriver.support.wait import WebDriverWait
-from webdriver_manager.chrome import ChromeDriverManager
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support import expected_conditions as EC
 from Pages.base_page import BasePage
 from conftest import driver
+import pdb
 
 object_of_basepage = BasePage(driver)
 print(object_of_basepage.CHECKOUT_COMPLETE_URL.split('com', 1)[1])
@@ -44,3 +36,68 @@ def login_test(browser):
 
 # driver.quit()
 """
+
+
+def is_happy_number(number):
+    l_num = list(str(number))
+    half = len(l_num) / 2
+    i = 0
+    fst_half = []
+    snd_half = []
+    sqr1 = 1
+    sqr2 = 1
+    if len(l_num) % 2 != 0:
+        return False
+    elif len(l_num) % 2 == 0:
+        for el in l_num:
+            i += 1
+            if i > half:
+                i = 0
+                break
+            fst_half.append(el)
+            sqr1 = int(el) * sqr1
+        pdb.set_trace()
+        for el in reversed(l_num):
+            i += 1
+            if i > half:
+                break
+            snd_half.append(el)
+            sqr2 = int(el) * sqr2
+        pdb.set_trace()
+        if sqr1 == sqr2:
+            return True
+        else:
+            return False
+
+print(is_happy_number(6262))
+
+
+str_t = "tet"
+int_t = 2
+li_t = [2, "tet"]
+arr_t = {2, 4, "tet"}
+
+
+'''def test_try_to_go_to_inventory_without_login(driver):
+    object_of_helper = Helper(driver)
+    object_of_helper.check_pages_to_go(driver, object_of_helper.INVENTORY_URL)
+
+
+def test_try_to_go_to_cart_without_login(driver):
+    object_of_helper = Helper(driver)
+    object_of_helper.check_pages_to_go(driver, BasePage.CART_URL)
+
+
+def test_try_to_go_to_checkout_step_one_without_login(driver):
+    object_of_helper = Helper(driver)
+    object_of_helper.check_pages_to_go(driver, BasePage.CHECKOUT_STEP_ONE_URL)
+
+
+def test_try_to_go_to_checkout_step_two_without_login(driver):
+    object_of_helper = Helper(driver)
+    object_of_helper.check_pages_to_go(driver, BasePage.CHECKOUT_STEP_TWO_URL)
+
+
+def test_try_to_go_to_checkout_complete_without_login(driver):
+    object_of_helper = Helper(driver)
+    object_of_helper.check_pages_to_go(driver, BasePage.CHECKOUT_COMPLETE_URL)'''
